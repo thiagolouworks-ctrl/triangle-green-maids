@@ -128,8 +128,13 @@ const update = () => {
 
   if (!reduceMotion.matches) {
     const vh = window.innerHeight;
+    const isMd = window.innerWidth >= 768;
     // Grow sections: inset rounded card → full bleed while the section enters the viewport.
     for (const el of growEls) {
+      if (!isMd) {
+        el.style.clipPath = '';
+        continue;
+      }
       const r = el.parentElement!.getBoundingClientRect();
       const p = Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.85)));
       const e = 1 - Math.pow(1 - p, 3);
@@ -138,7 +143,11 @@ const update = () => {
       el.style.clipPath = `inset(${iy.toFixed(1)}px ${ix.toFixed(1)}px round ${(40 * (1 - e)).toFixed(1)}px)`;
     }
     // Hero: photo zooms in and copy drifts up/fades as the hero scrolls away.
-    if (heroZoom && heroContent) {
+    if (heroZoom && heroContent && !isMd) {
+      heroZoom.style.transform = '';
+      heroContent.style.transform = '';
+      heroContent.style.opacity = '';
+    } else if (heroZoom && heroContent) {
       const p = Math.min(1, Math.max(0, y / (heroZoom.parentElement?.offsetHeight || vh)));
       if (p < 1) {
         const eased = 1 - Math.pow(1 - p, 2);
@@ -147,7 +156,6 @@ const update = () => {
         heroContent.style.opacity = (1 - p * 0.7).toFixed(3);
       }
     }
-    const isMd = window.innerWidth >= 768;
     for (const el of parallaxEls) {
       // Stacked layouts (mobile) skip parallax where it would only cause overlap.
       if (el.dataset.parallaxMin === 'md' && !isMd) {
@@ -189,12 +197,14 @@ const setOpen = (trigger: HTMLElement, panel: HTMLElement, open: boolean) => {
   else panel.setAttribute('inert', '');
 };
 
-/* Nav dropdowns (desktop): hover with intent delay + click + keyboard */
+/* Nav dropdowns: desktop = hover intent + click + keyboard; mobile menu = tap accordions */
 document.querySelectorAll<HTMLElement>('[data-dropdown]').forEach((wrap) => {
   const trigger = wrap.querySelector<HTMLElement>('[data-dropdown-trigger]');
   const panel = wrap.querySelector<HTMLElement>('[data-dropdown-panel]');
   if (!trigger || !panel) return;
   let closeTimer = 0;
+  // Mobile menu accordions open on tap only (no hover-intent).
+  const hoverable = !wrap.closest('[data-menu-panel]');
   const open = () => {
     window.clearTimeout(closeTimer);
     document.querySelectorAll<HTMLElement>('[data-dropdown]').forEach((other) => {
@@ -209,10 +219,10 @@ document.querySelectorAll<HTMLElement>('[data-dropdown]').forEach((wrap) => {
     closeTimer = window.setTimeout(() => setOpen(trigger, panel, false), 160);
   };
   wrap.addEventListener('pointerenter', (e) => {
-    if ((e as PointerEvent).pointerType === 'mouse') open();
+    if (hoverable && (e as PointerEvent).pointerType === 'mouse') open();
   });
   wrap.addEventListener('pointerleave', (e) => {
-    if ((e as PointerEvent).pointerType === 'mouse') close();
+    if (hoverable && (e as PointerEvent).pointerType === 'mouse') close();
   });
   trigger.addEventListener('click', () => {
     const isOpen = trigger.getAttribute('aria-expanded') === 'true';
@@ -220,7 +230,7 @@ document.querySelectorAll<HTMLElement>('[data-dropdown]').forEach((wrap) => {
     else open();
   });
   wrap.addEventListener('focusout', (e) => {
-    if (!wrap.contains(e.relatedTarget as Node)) setOpen(trigger, panel, false);
+    if (hoverable && !wrap.contains(e.relatedTarget as Node)) setOpen(trigger, panel, false);
   });
   wrap.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -276,3 +286,10 @@ document.querySelectorAll<HTMLElement>('[data-accordion]').forEach((group) => {
     });
   });
 });
+
+/* Prototype links ("#") stay put instead of jumping to the top of the page. */
+document.addEventListener('click', (e) => {
+  const a = (e.target as Element | null)?.closest?.('a[href="#"]');
+  if (a) e.preventDefault();
+});
+

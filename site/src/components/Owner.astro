@@ -23,27 +23,27 @@ import FloatingTriangles from './FloatingTriangles.astro';
     ]}
   />
 
-  <div class="container-page relative z-10 grid grid-cols-1 gap-x-gutter pt-xl pb-2xl lg:grid-cols-12 lg:pt-[72px] lg:pb-[109px]">
-    <h2 class="type-display-xl max-w-[560px] text-text lg:col-span-7 lg:row-start-1 lg:mt-[48px]" data-reveal>
+  <div class="container-page relative z-10 section-y grid grid-cols-1 gap-x-gutter lg:grid-cols-12">
+    <h2 class="type-display-xl max-w-[560px] text-text lg:col-span-7 lg:row-start-1" data-reveal>
       {owner.heading}
     </h2>
 
     <!-- Mobile composition (Figma 60:373) -->
-    <div class="relative mt-lg aspect-[648/772] w-full lg:hidden" aria-label={owner.photoAlt} role="img">
-      <div class="absolute top-0 left-[12.35%] h-[82.9%] w-[74.07%]" data-reveal="rise">
+    <div class="relative mt-lg aspect-[513/772] w-full lg:hidden" aria-label={owner.photoAlt} role="img">
+      <div class="absolute top-0 right-0 h-[82.9%] w-[93.6%]" data-reveal="rise">
         <div class="reveal-layer absolute inset-0 overflow-hidden rounded-md">
           <Picture
             src={images.ownerPlace}
             alt=""
             widths={[480, 720, 960, 1440]}
-            sizes="75vw"
+            sizes="95vw"
             formats={['avif', 'webp']}
             loading="lazy"
             class="reveal-zoom size-full object-cover object-[50%_60%]"
           />
         </div>
       </div>
-      <div class="absolute top-[52.2%] left-[7.25%] h-[40.5%] w-[42.13%]" data-reveal="rise" style="--i:2">
+      <div class="absolute top-[52.2%] left-0 h-[40.5%] w-[53.2%] shadow-[0_16px_40px_-24px_rgba(17,19,17,0.45)]" data-reveal="rise" style="--i:2">
         <div class="reveal-layer absolute inset-0 overflow-hidden rounded-md">
           <Image
             src={images.ownerPortrait}
@@ -55,7 +55,7 @@ import FloatingTriangles from './FloatingTriangles.astro';
           />
         </div>
       </div>
-      <div class="absolute top-[79.3%] left-[31.17%] w-[29.63%]" data-reveal style="--i:4">
+      <div class="absolute top-[79.3%] left-[30.2%] w-[37.4%]" data-reveal style="--i:4">
         <Image src={images.brandTriangle} alt="" width={192} height={160} class="aspect-[192/160] w-full object-contain" loading="lazy" />
       </div>
     </div>
@@ -83,7 +83,7 @@ import FloatingTriangles from './FloatingTriangles.astro';
       </div>
     </div>
 
-    <div class="mt-xl flex flex-col gap-md lg:col-span-5 lg:col-start-4 lg:row-start-2 lg:mt-[184px]">
+    <div class="mt-lg flex flex-col gap-md lg:col-span-5 lg:col-start-4 lg:row-start-2 lg:mt-[232px]">
       <div class="flex flex-col gap-xs" data-reveal>
         <h3 class="type-heading-h3 text-text">{owner.name}</h3>
         <p class="type-label-eyebrow text-green" data-display-case>{displayCase(owner.role)}</p>
@@ -98,7 +98,7 @@ import FloatingTriangles from './FloatingTriangles.astro';
     </div>
 
     <!-- Desktop: official portrait -->
-    <div class="hidden lg:col-span-3 lg:col-start-1 lg:row-start-2 lg:mt-[391px] lg:block lg:w-[238px]" data-reveal="rise" style="--i:1">
+    <div class="hidden lg:col-span-3 lg:col-start-1 lg:row-start-2 lg:mt-[439px] lg:block lg:w-[238px]" data-reveal="rise" style="--i:1">
       <div class="reveal-layer overflow-hidden rounded-md">
         <Image
           src={images.ownerPortrait}

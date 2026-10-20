@@ -181,3 +181,16 @@
     padding-inline: var(--spacing-margin);
   }
 }
+
+/*
+  Section rhythm — one rule for every content section:
+  64px top/bottom on mobile, 120px (space/section) from lg up.
+  Heading → content: 40px mobile / 64px desktop (mt-lg lg:mt-xl or gap-lg lg:gap-xl).
+*/
+@utility section-y {
+  padding-block: var(--spacing-xl);
+  @media (width >= 64rem) {
+    padding-block: var(--spacing-section);
+  }
+}
+

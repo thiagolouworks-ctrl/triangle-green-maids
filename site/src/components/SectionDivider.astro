@@ -8,7 +8,7 @@ import { Image } from 'astro:assets';
 import { images } from '../data/images';
 ---
 
-<div class="container-page relative z-10" aria-hidden="true">
+<div class="container-page relative z-10 hidden md:block" aria-hidden="true">
   <div class="flex items-center gap-[12px]" data-reveal="line">
     <Image src={images.brandTriangle} alt="" width={24} densities={[1, 2]} class="divider-mark h-5 w-6 shrink-0 object-contain" loading="lazy" />
     <div class="divider-line h-px flex-1 origin-left bg-line"></div>

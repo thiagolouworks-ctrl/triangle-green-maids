@@ -1,10 +1,13 @@
 /*
   Frozen copy — every string comes verbatim from ../../../copy.md.
   Do not edit wording, capitalisation or punctuation here; run `npm run audit:copy` after any change.
-  Relative destinations from copy.md resolve against the live site so every link keeps working.
+  Prototype (2026-10-20): links must NOT lead to the pages of the current live site, so every
+  page link renders as "#". The real path stays next to each item (and in copy.md);
+  set LINK_TO_LIVE_SITE = true at launch to restore them.
 */
 export const SITE_URL = 'https://trianglegreenmaids.com';
-const url = (path: string) => `${SITE_URL}${path}`;
+const LINK_TO_LIVE_SITE = false;
+const url = (path: string) => (LINK_TO_LIVE_SITE ? `${SITE_URL}${path}` : '#');
 
 export const meta = {
   title: 'Home - Triangle Green Maids',
@@ -25,7 +28,7 @@ export const topBar = {
 export const brand = {
   logoAlt: 'Triangle Green Cleaning Logo',
   footerLogoAlt: 'Triangle Green Maids',
-  href: SITE_URL,
+  href: url('/'),
 };
 
 export type NavLink = { label: string; href: string; children?: { label: string; href: string }[] };
@@ -60,7 +63,7 @@ export const nav: NavLink[] = [
 ];
 
 export const cta = {
-  book: { label: 'BOOK ONLINE NOW', href: SITE_URL },
+  book: { label: 'BOOK ONLINE NOW', href: url('/') },
   quote: { label: 'GET A QUICK QUOTE', href: url('/quote') },
 };
 

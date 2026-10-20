@@ -18,13 +18,13 @@ const speeds = ['0.04', '-0.03', '0.07'];
       { x: 'calc(50% + 380px)', y: '200px', size: 20, color: 'teal', rot: 180, bob: 9, delay: 3, speed: 0.05 },
     ]}
   />
-  <div class="container-page relative z-10 py-2xl lg:py-section">
+  <div class="container-page relative z-10 section-y">
     <div class="flex flex-col items-center gap-sm text-center">
       <h2 class="type-heading-h2 text-text" data-reveal>{testimonials.heading}</h2>
       <p class="type-body-md text-text-muted" data-reveal style="--i:1">{testimonials.subheading}</p>
     </div>
 
-    <ul class="mt-xl grid grid-cols-1 gap-md md:grid-cols-3 lg:gap-gutter">
+    <ul class="mt-lg grid lg:mt-xl grid-cols-1 gap-md md:grid-cols-3 lg:gap-gutter">
       {
         testimonials.items.map((item, i) => (
           <li class="md:will-change-transform" data-parallax={speeds[i]} data-parallax-min="md">

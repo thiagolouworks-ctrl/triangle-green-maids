@@ -1,8 +1,10 @@
 ---
 /*
   02 Hero (58:386): full-bleed photo, no overlay, centred copy on the dark wall.
-  Image: 2:1 source, cover-cropped and anchored left like the design (w 116.67%, left 0);
-  on narrow screens the crop keeps the dark wall behind the text.
+  Desktop: 2:1 source, cover-cropped and anchored left like the design; Ken Burns + scroll zoom.
+  Mobile (< md): no motion. The photo fills the top of the screen (behind the header), reframed
+  on the woman so her face, hands and the cloth on the counter are visible; its bottom edge fades
+  into the wall colour (#191e19, sampled from the photo) and the copy sits below, at the bottom.
 */
 import { Picture } from 'astro:assets';
 import { hero, cta } from '../data/content';
@@ -11,34 +13,38 @@ import Button from './Button.astro';
 ---
 
 <!-- Fills the first screen: 100svh on mobile, 100svh minus the 48px top bar from md up. -->
-<section class="section-hero on-dark relative isolate flex h-[100svh] min-h-[600px] items-center justify-center overflow-hidden bg-black text-white md:h-[calc(100svh-var(--topbar-h))]">
-  <div class="hero-media absolute inset-0 -z-10">
-    <div class="absolute inset-0 will-change-transform" data-hero-zoom>
-    <Picture
-      src={images.hero}
-      alt=""
-      widths={[640, 960, 1280, 1680, 2240, 2880]}
-      sizes="100vw"
-      formats={['avif', 'webp']}
-      loading="eager"
-      fetchpriority="high"
-      class="hero-kenburns size-full object-cover object-[30%_50%] md:object-[0%_50%]"
-    />
+<section
+  class="section-hero on-dark relative isolate flex min-h-[100svh] flex-col items-center overflow-hidden bg-[#191e19] text-white md:h-[calc(100svh-var(--topbar-h))] md:min-h-0 md:flex-row md:justify-center md:bg-black"
+>
+  <!-- Mobile: in flow above the copy (flex-1; the copy overlaps its faded bottom by 16px). Desktop: full-bleed layer. -->
+  <div class="hero-media relative -mb-sm min-h-[440px] w-full flex-1 md:absolute md:inset-0 md:mb-0 md:min-h-0 md:-z-10">
+    <div class="absolute inset-0 md:will-change-transform" data-hero-zoom>
+      <Picture
+        src={images.hero}
+        alt=""
+        widths={[640, 960, 1280, 1680, 2240, 2880]}
+        sizes="(max-width: 767px) 110vh, 100vw"
+        formats={['avif', 'webp']}
+        loading="eager"
+        fetchpriority="high"
+        class="hero-kenburns size-full object-cover object-[86%_50%] md:object-[0%_50%]"
+      />
     </div>
+    <div class="absolute inset-x-0 bottom-0 h-[16%] bg-[linear-gradient(to_top,#191e19_0%,transparent_100%)] md:hidden" aria-hidden="true"></div>
   </div>
 
-  <div class="container-page flex flex-col items-center pt-[104px] pb-2xl text-center will-change-transform md:pt-[152px]" data-hero-content>
+  <div class="container-page relative z-10 flex flex-col items-center pb-xl text-center md:pt-[152px] md:pb-2xl md:will-change-transform" data-hero-content>
     <h1 class="type-display-h1 max-w-[864px] text-balance">
       <span class="block" data-hero-item style="--i:0">{hero.titleLead}</span>{' '}<span class="block" data-hero-item style="--i:1"
         ><span class="text-green-bright">{hero.titleAccent}</span> {hero.titleTail}</span
       >
     </h1>
-    <p class="type-body-lg mt-md max-w-[440px] text-white/90" data-hero-item style="--i:2">
+    <p class="type-body-lg mt-sm max-w-[440px] text-white/90 md:mt-md" data-hero-item style="--i:2">
       {hero.lead} <br class="hidden sm:block" />{hero.tail}
     </p>
-    <div class="mt-lg flex flex-wrap justify-center gap-sm" data-hero-item style="--i:3">
-      <Button href={cta.book.href}>{cta.book.label}</Button>
-      <Button href={cta.quote.href} variant="outline-light">{cta.quote.label}</Button>
+    <div class="mt-md flex flex-wrap justify-center gap-xs md:mt-lg md:gap-sm" data-hero-item style="--i:3">
+      <Button href={cta.book.href} size="sm" class="md:min-h-12 md:px-md">{cta.book.label}</Button>
+      <Button href={cta.quote.href} variant="outline-light" size="sm" class="md:min-h-12 md:px-md">{cta.quote.label}</Button>
     </div>
   </div>
 </section>

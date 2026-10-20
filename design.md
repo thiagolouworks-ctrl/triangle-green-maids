@@ -683,3 +683,16 @@ Referência de **comportamento**, nada copiado: cada detalhe usa o universo da T
 - **Removida a faixa verde de realce** ("rodo") sob "home spotless and clean". O trecho continua só em verde.
 - **Owner, foto final** (2026-10-20): `raleigh.png`, fornecida pelo cliente interno (1728×2304, 3:4, o formato exato do card), salva como `site/assets/images/owner-raleigh.jpg`. Crop em 50%/60%. Substitui a foto *Gyre* do Unsplash, que fica no repositório como alternativa.
 
+### Ajustes de mobile (2026-10-20)
+- **Hero mobile** (revisado 2×): sem nenhum efeito (sem Ken Burns, sem zoom/fade no scroll, sem entrada). A foto fica em cima, ocupando o topo atrás do header, reenquadrada em `object-x 86%`: rosto, mãos e pano limpando a bancada ficam visíveis. A base da foto se funde na cor da parede (`#191e19`) com um fade curto (16%), e **texto e botões ficam embaixo**, sobre essa cor, encostando só 16px na foto. Em tela baixa o hero cresce além de 100svh para não cortar a cena. O desktop não mudou.
+- **Menu mobile**: Services e Products viram acordeões fechados por padrão (seta para abrir). O painel rola por conta própria (`data-lenis-prevent`), e todos os itens cabem na tela.
+- **Sem linhas divisórias no mobile** (`SectionDivider` só a partir de md).
+- **Sem efeitos de entrada no mobile**: reveals, entrada do hero e o "CTA que cresce" só rodam a partir de md. O Ken Burns do hero, os vídeos e o preloader continuam.
+- **Sem viúvas**: `text-wrap: balance` em títulos e `text-wrap: pretty` em parágrafos e listas, no site inteiro.
+- **Ritmo de espaçamento único**: utility `section-y` em todas as seções de conteúdo (Services, Owner, Testimonials, Service Area, FAQ), com 64px em cima e embaixo no mobile e 120px (`space/section`) a partir de lg. Do título ao conteúdo: 40px no mobile e 64px no desktop. A faixa de Trust fica com 64px e o CTA final com 96px, por serem faixa e banner. Footer: 64px no mobile e 96px no desktop.
+- **Owner mobile**: a composição do Figma 60:373 foi alinhada às margens do grid. A foto de Raleigh encosta na margem direita, com 93.6% da largura; o retrato do Darrick encosta na margem esquerda, com sombra suave; o triângulo fica centralizado embaixo. No desktop, o título e a foto agora começam no mesmo topo (120px).
+
+### Links no protótipo (2026-10-20)
+- Por pedido do cliente interno, nenhum link do protótipo leva às páginas do site atual. Os 50 links de página (menu, dropdowns, botões, cards de serviço, logo e footer) renderizam `href="#"`, e o clique não faz a página pular para o topo. É uma **exceção temporária à regra 3** do CLAUDE.md. Os caminhos reais continuam em `src/data/content.ts` e no `copy.md`: no lançamento basta `LINK_TO_LIVE_SITE = true`.
+- Continuam ativos: `mailto:`/`tel:` (não são sites) e o embed do Google Maps (mantido por decisão do cliente).
+

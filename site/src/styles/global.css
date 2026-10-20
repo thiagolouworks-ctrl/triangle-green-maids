@@ -20,6 +20,14 @@
     color: var(--color-black);
   }
 
+  /* No widows: balanced headings, "pretty" wrapping for running text. */
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+  }
+  p, li, blockquote, figcaption, dd {
+    text-wrap: pretty;
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-text);
     outline-offset: 2px;
@@ -58,7 +66,8 @@ html.lenis body {
    Hidden states only apply when JS is running (html.js) and the
    visitor has not asked for reduced motion.
    ------------------------------------------------------------------ */
-@media (prefers-reduced-motion: no-preference) {
+/* Entrance effects (reveals, hero entrance) run from md up only; mobile shows content as-is. */
+@media (prefers-reduced-motion: no-preference) and (width >= 48rem) {
   html.js [data-reveal] {
     opacity: 0;
     transform: translate3d(0, 24px, 0);
@@ -144,10 +153,7 @@ html.lenis body {
     transform: none;
   }
 
-  /* Floating brand triangles: slow breathing bob. */
-  .float-tri svg {
-    animation: tri-bob var(--bob, 7s) var(--ease-breathe) var(--bob-delay, 0s) infinite alternate;
-  }
+
 
   /* Hero entrance: the photo settles, then the copy rises. */
   html.js .hero-media {
@@ -158,11 +164,6 @@ html.lenis body {
     transform: scale(1);
   }
 
-  /* Ken Burns: the photo breathes very slowly. */
-  .hero-kenburns {
-    animation: hero-breathe 24s var(--ease-breathe) infinite alternate;
-    transform-origin: 40% 50%;
-  }
 
   html.js [data-hero-item] {
     opacity: 0;
@@ -254,6 +255,19 @@ html.js:not(.no-preloader) .preloader {
   }
   to {
     --hole: 520vmax;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Ken Burns: the photo breathes very slowly (desktop only — the mobile hero is still). */
+  @media (width >= 48rem) {
+    .hero-kenburns {
+      animation: hero-breathe 24s var(--ease-breathe) infinite alternate;
+      transform-origin: 40% 50%;
+    }
+  }
+  .float-tri svg {
+    animation: tri-bob var(--bob, 7s) var(--ease-breathe) var(--bob-delay, 0s) infinite alternate;
   }
 }
 
