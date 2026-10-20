@@ -1,0 +1,107 @@
+---
+/*
+  10 FAQ (44:365): heading (cols 1–4) + accordion (cols 5–12) of FaqItem (5:47).
+  First item open by default, as in the design. Answers verbatim from the official /faq page.
+*/
+import { faq } from '../data/content';
+import Plus from '../assets/icons/plus.svg';
+import Minus from '../assets/icons/minus.svg';
+---
+
+<section class="section-faq">
+  <div class="container-page flex flex-col gap-lg py-2xl lg:flex-row lg:gap-gutter lg:py-section">
+    <h2 class="type-heading-h2 text-text lg:w-[416px] lg:shrink-0" data-reveal>{faq.heading}</h2>
+
+    <div class="flex-1 lg:max-w-[864px]" data-accordion>
+      {
+        faq.items.map((item, i) => {
+          const open = i === 0;
+          return (
+            <div
+              class:list={['faq-item border-t border-line', open && 'is-open']}
+              data-accordion-item
+              data-reveal
+              style={`--i:${i}`}
+            >
+              <h3>
+                <button
+                  type="button"
+                  class="faq-trigger group type-heading-h3 flex w-full items-center gap-md py-lg text-left text-text md:py-[32px]"
+                  aria-expanded={open ? 'true' : 'false'}
+                  aria-controls={`faq-panel-${i}`}
+                  id={`faq-trigger-${i}`}
+                  data-accordion-trigger
+                >
+                  <span class="flex-1 transition-[color,translate] duration-[900ms] ease-[var(--ease-soft)] group-hover:translate-x-1.5 group-hover:text-green">
+                    {item.q}
+                  </span>
+                  <span
+                    class="relative grid size-10 shrink-0 place-items-center rounded-pill transition-[background-color,scale] duration-[900ms] ease-[var(--ease-soft)] group-hover:scale-105 group-hover:bg-sage"
+                    aria-hidden="true"
+                  >
+                    <span class="relative size-6">
+                      <Plus class="faq-icon faq-icon--plus absolute inset-0" />
+                      <Minus class="faq-icon faq-icon--minus absolute inset-0" />
+                    </span>
+                  </span>
+                </button>
+              </h3>
+              <div
+                id={`faq-panel-${i}`}
+                role="region"
+                aria-labelledby={`faq-trigger-${i}`}
+                class:list={['disclosure', open && 'is-open']}
+                data-accordion-panel
+                inert={open ? undefined : true}
+              >
+                <div>
+                  <p class="type-body-md max-w-[752px] pb-lg text-text-muted md:pb-[32px]">{item.a}</p>
+                </div>
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* A green line draws across the top border on hover / when open. */
+  .faq-item {
+    position: relative;
+  }
+  .faq-item::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--color-green);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1100ms var(--ease-soft);
+  }
+  .faq-item:has(.faq-trigger:hover)::before,
+  .faq-item.is-open::before {
+    transform: scaleX(1);
+  }
+  .faq-icon {
+    transition:
+      opacity 500ms var(--ease-calm),
+      transform 600ms var(--ease-calm);
+  }
+  .faq-icon--minus {
+    opacity: 0;
+    transform: rotate(-90deg);
+  }
+  .faq-item.is-open .faq-icon--plus {
+    opacity: 0;
+    transform: rotate(90deg);
+  }
+  .faq-item.is-open .faq-icon--minus {
+    opacity: 1;
+    transform: none;
+  }
+</style>

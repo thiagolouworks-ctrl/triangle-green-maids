@@ -1,0 +1,52 @@
+---
+/*
+  Floating brand triangles — loose facets of the official logo (fig.png is built from small
+  triangles), in its own blue/green, drifting slowly near a headline with a light parallax.
+  Decorative only: aria-hidden, no pointer events, hidden on small screens. Motion pauses
+  with prefers-reduced-motion (global rule).
+
+  items: x/y position (any CSS length), size in px, colour, rotation, outline or filled,
+  bob duration/delay and parallax speed.
+*/
+interface Tri {
+  x: string;
+  y: string;
+  size: number;
+  color: 'blue' | 'leaf' | 'teal' | 'green';
+  rot?: number;
+  outline?: boolean;
+  bob?: number;
+  delay?: number;
+  speed?: number;
+}
+interface Props {
+  items: Tri[];
+}
+const { items } = Astro.props;
+const fill = {
+  blue: 'var(--color-brand-blue)',
+  leaf: 'var(--color-brand-leaf)',
+  teal: 'var(--color-brand-teal)',
+  green: 'var(--color-green-bright)',
+};
+---
+
+<div class="pointer-events-none absolute inset-0 z-0 hidden md:block" aria-hidden="true">
+  {
+    items.map((t) => (
+      <span
+        class="float-tri absolute block will-change-transform"
+        style={`left:${t.x};top:${t.y};width:${t.size}px;height:${Math.round(t.size * 0.87)}px;--rot:${t.rot ?? 0}deg;--bob:${t.bob ?? 7}s;--bob-delay:-${t.delay ?? 0}s;`}
+        data-parallax={t.speed ?? 0.05}
+      >
+        <svg viewBox="0 0 24 21" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {t.outline ? (
+            <path d="M12 1.5 22.5 19.5H1.5Z" stroke={fill[t.color]} stroke-width="1.6" stroke-linejoin="round" />
+          ) : (
+            <path d="M12 0 24 21H0Z" fill={fill[t.color]} opacity="0.85" />
+          )}
+        </svg>
+      </span>
+    ))
+  }
+</div>

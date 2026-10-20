@@ -1,0 +1,16 @@
+---
+/*
+  SectionDivider (Figma 30:179): 1px color/line inside the grid margins, opened by the
+  official brand triangle (fig.png). On reveal the triangle settles in, then the line draws
+  from left to right.
+*/
+import { Image } from 'astro:assets';
+import { images } from '../data/images';
+---
+
+<div class="container-page relative z-10" aria-hidden="true">
+  <div class="flex items-center gap-[12px]" data-reveal="line">
+    <Image src={images.brandTriangle} alt="" width={24} densities={[1, 2]} class="divider-mark h-5 w-6 shrink-0 object-contain" loading="lazy" />
+    <div class="divider-line h-px flex-1 origin-left bg-line"></div>
+  </div>
+</div>

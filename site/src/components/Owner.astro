@@ -1,0 +1,115 @@
+---
+/*
+  06 Owner (44:329 desktop · 60:373 mobile composition).
+  Desktop: headline (cols 1–7) · bio (cols 4–8) · official portrait (cols 1–2) · Raleigh photo
+  (cols 9–12, bleeding right) with the official brand triangle on its lower-left corner.
+  Mobile (< lg): one stacked composition from Figma 60:373 — Raleigh photo, portrait overlapping
+  its lower-left, triangle tucked under both — placed after the headline.
+  The portrait is the official photo — never replaced or altered.
+*/
+import { Picture, Image } from 'astro:assets';
+import { owner } from '../data/content';
+import { displayCase } from '../lib/text';
+import { images } from '../data/images';
+import FloatingTriangles from './FloatingTriangles.astro';
+---
+
+<section class="section-owner relative overflow-hidden">
+  <FloatingTriangles
+    items={[
+      { x: 'calc(50% - 128px)', y: '150px', size: 22, color: 'leaf', rot: 8, bob: 8, speed: 0.06 },
+      { x: 'calc(50% - 40px)', y: '250px', size: 12, color: 'blue', rot: -14, outline: true, bob: 6.5, delay: 2, speed: 0.1 },
+      { x: 'calc(50% - 200px)', y: '330px', size: 14, color: 'teal', rot: 180, bob: 9, delay: 4, speed: 0.04 },
+    ]}
+  />
+
+  <div class="container-page relative z-10 grid grid-cols-1 gap-x-gutter pt-xl pb-2xl lg:grid-cols-12 lg:pt-[72px] lg:pb-[109px]">
+    <h2 class="type-display-xl max-w-[560px] text-text lg:col-span-7 lg:row-start-1 lg:mt-[48px]" data-reveal>
+      {owner.heading}
+    </h2>
+
+    <!-- Mobile composition (Figma 60:373) -->
+    <div class="relative mt-lg aspect-[648/772] w-full lg:hidden" aria-label={owner.photoAlt} role="img">
+      <div class="absolute top-0 left-[12.35%] h-[82.9%] w-[74.07%]" data-reveal="rise">
+        <div class="reveal-layer absolute inset-0 overflow-hidden rounded-md">
+          <Picture
+            src={images.ownerPlace}
+            alt=""
+            widths={[480, 720, 960, 1440]}
+            sizes="75vw"
+            formats={['avif', 'webp']}
+            loading="lazy"
+            class="reveal-zoom size-full object-cover object-[50%_60%]"
+          />
+        </div>
+      </div>
+      <div class="absolute top-[52.2%] left-[7.25%] h-[40.5%] w-[42.13%]" data-reveal="rise" style="--i:2">
+        <div class="reveal-layer absolute inset-0 overflow-hidden rounded-md">
+          <Image
+            src={images.ownerPortrait}
+            alt=""
+            width={273}
+            densities={[1, 2]}
+            class="reveal-zoom size-full scale-[1.075] object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+      <div class="absolute top-[79.3%] left-[31.17%] w-[29.63%]" data-reveal style="--i:4">
+        <Image src={images.brandTriangle} alt="" width={192} height={160} class="aspect-[192/160] w-full object-contain" loading="lazy" />
+      </div>
+    </div>
+
+    <!-- Desktop: Raleigh photo bleeding right + brand triangle -->
+    <div class="relative mt-lg hidden lg:col-start-9 lg:col-end-13 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:-mr-margin lg:block">
+      <div class="relative h-[640px]" data-reveal="rise">
+        <div class="reveal-layer absolute inset-0 overflow-hidden rounded-l-md">
+          <div class="absolute inset-x-0 -inset-y-16">
+            <Picture
+              src={images.ownerPlace}
+              alt=""
+              widths={[600, 960, 1200, 1728]}
+              sizes="600px"
+              formats={['avif', 'webp']}
+              loading="lazy"
+              class="size-full object-cover object-[50%_60%] will-change-transform"
+              data-parallax="0.06"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="pointer-events-none absolute top-[554px] left-[18px] w-[192px]" aria-hidden="true" data-reveal style="--i:3">
+        <Image src={images.brandTriangle} alt="" width={192} height={160} class="h-40 w-48 object-contain" loading="lazy" />
+      </div>
+    </div>
+
+    <div class="mt-xl flex flex-col gap-md lg:col-span-5 lg:col-start-4 lg:row-start-2 lg:mt-[184px]">
+      <div class="flex flex-col gap-xs" data-reveal>
+        <h3 class="type-heading-h3 text-text">{owner.name}</h3>
+        <p class="type-label-eyebrow text-green" data-display-case>{displayCase(owner.role)}</p>
+      </div>
+      {
+        owner.bio.map((paragraph, i) => (
+          <p class="type-body-md text-text-muted" data-reveal style={`--i:${i + 1}`}>
+            {paragraph}
+          </p>
+        ))
+      }
+    </div>
+
+    <!-- Desktop: official portrait -->
+    <div class="hidden lg:col-span-3 lg:col-start-1 lg:row-start-2 lg:mt-[391px] lg:block lg:w-[238px]" data-reveal="rise" style="--i:1">
+      <div class="reveal-layer overflow-hidden rounded-md">
+        <Image
+          src={images.ownerPortrait}
+          alt={owner.photoAlt}
+          width={238}
+          height={273}
+          densities={[1, 2]}
+          class="reveal-zoom aspect-[238/273] w-full scale-[1.075] object-cover"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </div>
+</section>

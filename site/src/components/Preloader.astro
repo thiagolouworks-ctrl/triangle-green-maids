@@ -1,0 +1,20 @@
+---
+/*
+  Preloader — the official triangle (fig.png) settles in, then grows while the page is revealed
+  through a triangle-shaped opening that expands to fill the screen (global.css + motion.ts).
+  Once per session; never shown without JS or with prefers-reduced-motion (Base.astro head script).
+  The logo file is used as-is — not redrawn.
+*/
+import { Image } from 'astro:assets';
+import { images } from '../data/images';
+
+// Same silhouette and proportions as fig.png (399×333).
+const hole = `url("data:image/svg+xml,${encodeURIComponent(
+  "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 399 333'><path d='M199.5 0 399 333H0Z'/></svg>",
+)}")`;
+---
+
+<div class="preloader" aria-hidden="true" data-preloader style={`--tri-hole:${hole};`}>
+  <div class="preloader__veil"></div>
+  <Image src={images.brandTriangle} alt="" width={112} densities={[1, 2]} class="preloader__mark" loading="eager" />
+</div>

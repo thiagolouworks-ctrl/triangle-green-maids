@@ -1,0 +1,27 @@
+---
+/* 03 Trust (44:311): sentence + the four official partner logos (alt as on the published site). */
+import { Image } from 'astro:assets';
+import { trust } from '../data/content';
+import { images } from '../data/images';
+---
+
+<section class="section-trust relative z-10">
+  <div class="container-page flex flex-col gap-lg py-xl lg:flex-row lg:items-center lg:gap-xl">
+    <p class="type-body-lg max-w-[528px] text-text lg:shrink-0" data-reveal>{trust.text}</p>
+    <ul class="grid flex-1 grid-cols-2 items-center gap-md sm:grid-cols-4 lg:flex lg:justify-between">
+      {
+        images.partners.map((logo, i) => (
+          <li class="flex h-20 items-center justify-center lg:w-40" data-reveal style={`--i:${i + 1}`}>
+            <Image
+              src={logo}
+              alt={trust.partnerAlt}
+              height={160}
+              class="h-full max-h-20 w-auto max-w-40 object-contain"
+              loading="lazy"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

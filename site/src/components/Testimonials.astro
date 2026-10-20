@@ -1,0 +1,54 @@
+---
+/*
+  07 Testimonials (44:344): centred heading + three TestimonialCard v2 (20:174). Text verbatim from copy.md.
+  No hover; cards drift at slightly different parallax speeds (outer <li>) while the inner card reveals.
+*/
+import { testimonials } from '../data/content';
+import QuoteIcon from '../assets/icons/quote.svg';
+import FloatingTriangles from './FloatingTriangles.astro';
+
+const speeds = ['0.04', '-0.03', '0.07'];
+---
+
+<section class="section-testimonials relative overflow-hidden">
+  <FloatingTriangles
+    items={[
+      { x: 'calc(50% - 380px)', y: '108px', size: 18, color: 'blue', rot: -10, bob: 7.5, speed: 0.07 },
+      { x: 'calc(50% + 330px)', y: '92px', size: 13, color: 'leaf', rot: 20, outline: true, bob: 6, delay: 1.5, speed: 0.1 },
+      { x: 'calc(50% + 380px)', y: '200px', size: 20, color: 'teal', rot: 180, bob: 9, delay: 3, speed: 0.05 },
+    ]}
+  />
+  <div class="container-page relative z-10 py-2xl lg:py-section">
+    <div class="flex flex-col items-center gap-sm text-center">
+      <h2 class="type-heading-h2 text-text" data-reveal>{testimonials.heading}</h2>
+      <p class="type-body-md text-text-muted" data-reveal style="--i:1">{testimonials.subheading}</p>
+    </div>
+
+    <ul class="mt-xl grid grid-cols-1 gap-md md:grid-cols-3 lg:gap-gutter">
+      {
+        testimonials.items.map((item, i) => (
+          <li class="md:will-change-transform" data-parallax={speeds[i]} data-parallax-min="md">
+            <div class="flex h-full flex-col gap-md rounded-md bg-white p-lg md:min-h-[336px]" data-reveal style={`--i:${i}`}>
+              <QuoteIcon aria-hidden="true" />
+              <blockquote class="type-body-lg flex-1 text-text">
+                <p>{item.quote}</p>
+              </blockquote>
+              <div class="flex items-center gap-sm">
+                <span
+                  class="type-label-button grid size-12 shrink-0 place-items-center rounded-pill bg-green text-white"
+                  aria-hidden="true"
+                >
+                  {item.initial}
+                </span>
+                <div class="flex flex-col">
+                  <p class="type-body-md font-semibold text-text">{item.name}</p>
+                  <p class="type-body-sm text-text-muted">{item.time}</p>
+                </div>
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

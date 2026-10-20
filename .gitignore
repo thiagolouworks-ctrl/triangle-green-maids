@@ -1,0 +1,30 @@
+# OS / editors
+.DS_Store
+.idea/
+
+# Dependencies & build (site/ is an Astro project)
+node_modules/
+site/dist/
+site/.astro/
+.env
+.env.*
+
+# Raw source dropped in by the client (in use as site/assets/images/owner-raleigh.jpg)
+/raleigh.png
+
+# Images: keep only the files the site imports (alternatives, rejected takes and
+# video sources stay local — see image-prompts.md for what each one was).
+site/assets/images/*
+!site/assets/images/brand/
+!site/assets/images/partners/
+!site/assets/images/hero-cleaner.jpg
+!site/assets/images/owner-darrick-seconi.png
+!site/assets/images/owner-raleigh.jpg
+!site/assets/images/v5/
+site/assets/images/v5/*
+!site/assets/images/v5/cta-curtain.jpg
+!site/assets/images/v5/service-deep-cleaning.jpg
+!site/assets/images/v5/service-house-apartments.jpg
+!site/assets/images/v5/service-move-in-out.jpg
+!site/assets/images/v5/service-overview.jpg
+!site/assets/images/v5/service-post-construction.jpg

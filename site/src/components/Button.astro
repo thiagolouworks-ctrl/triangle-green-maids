@@ -1,0 +1,96 @@
+---
+/*
+  Button — Figma component `Button` (5:18). One shape for the whole page (pill) so CTAs read consistently.
+  primary: brand green, white label (AA 4.71:1) · outline-light: on photos/dark · outline: on light.
+  Hover (subtle): the background shifts tone softly and the label rolls up, replaced by an
+  identical copy (aria-hidden). Active → 1px press, focus-visible → 2px outline.
+*/
+import type { HTMLAttributes } from 'astro/types';
+import { displayCase } from '../lib/text';
+
+interface Props extends HTMLAttributes<'a'> {
+  href: string;
+  variant?: 'primary' | 'outline-light' | 'outline';
+  size?: 'md' | 'sm';
+}
+
+const { href, variant = 'primary', size = 'md', class: className, ...rest } = Astro.props;
+const label = displayCase((await Astro.slots.render('default')).trim());
+
+const variants = {
+  primary: 'bg-green text-white hover:bg-green-hover focus-visible:bg-green-hover',
+  'outline-light': 'border border-white/80 text-white hover:border-white hover:bg-white/10 focus-visible:bg-white/10',
+  outline: 'border border-text/70 text-text hover:border-text hover:bg-text/5 focus-visible:bg-text/5',
+};
+---
+
+<a
+  href={href}
+  class:list={[
+    'btn type-label-button relative isolate inline-flex overflow-hidden min-h-12 items-center justify-center rounded-pill px-md whitespace-nowrap',
+    'transition-[background-color,border-color,color,translate] duration-[800ms] ease-[var(--ease-soft)] active:translate-y-px',
+    size === 'sm' && 'min-h-11 px-[20px]',
+    variants[variant],
+    className,
+  ]}
+  {...rest}
+>
+  <span class="btn__sheen" aria-hidden="true"></span>
+  <span class="btn__label">
+    <span class="btn__line" data-display-case set:html={label} />
+    <span class="btn__line btn__line--clone" aria-hidden="true" data-display-case set:html={label} />
+  </span>
+</a>
+
+<style>
+  /* Polished-surface sheen: one thin light reflection crosses the button on hover. */
+  .btn__sheen {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      rgb(255 255 255 / 0.22) 47%,
+      rgb(255 255 255 / 0.32) 50%,
+      rgb(255 255 255 / 0.22) 53%,
+      transparent 65%
+    );
+    transform: translate3d(-110%, 0, 0);
+  }
+  .btn:hover .btn__sheen,
+  .btn:focus-visible .btn__sheen {
+    transform: translate3d(110%, 0, 0);
+    transition: transform 1100ms var(--ease-soft);
+  }
+  .btn__label {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    line-height: 16px;
+    height: 16px;
+  }
+  .btn__line {
+    display: block;
+    transition:
+      transform 800ms var(--ease-soft),
+      opacity 800ms var(--ease-soft);
+  }
+  .btn__line--clone {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  .btn:hover .btn__line:not(.btn__line--clone),
+  .btn:focus-visible .btn__line:not(.btn__line--clone) {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+  .btn:hover .btn__line--clone,
+  .btn:focus-visible .btn__line--clone {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+</style>

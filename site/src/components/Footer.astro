@@ -1,0 +1,68 @@
+---
+/* 12 Footer (44:383): forest, three columns, official white logo and the site's social icons. */
+import { Image } from 'astro:assets';
+import { footer, contact, brand } from '../data/content';
+import { images } from '../data/images';
+import { displayCase } from '../lib/text';
+import Instagram from '../assets/icons/instagram.svg';
+import Linkedin from '../assets/icons/linkedin.svg';
+import Facebook from '../assets/icons/facebook.svg';
+
+const icons = { instagram: Instagram, linkedin: Linkedin, facebook: Facebook } as const;
+---
+
+<footer class="section-footer on-dark bg-forest text-white">
+  <div class="container-page pt-2xl pb-lg">
+    <div class="grid grid-cols-1 gap-xl md:grid-cols-3 md:gap-gutter">
+      <div class="flex flex-col gap-md">
+        <a href={brand.href} class="w-fit transition-opacity duration-500 hover:opacity-80">
+          <Image src={images.logoWhite} alt={brand.footerLogoAlt} width={225} densities={[1, 2]} class="h-16 w-auto object-contain" loading="lazy" />
+        </a>
+        <ul class="flex gap-sm">
+          {
+            footer.social.map((s) => {
+              const Icon = icons[s.key as keyof typeof icons];
+              return (
+                <li>
+                  <a
+                    href={s.href}
+                    aria-label={s.label}
+                    class="grid size-12 place-items-center rounded-pill border border-on-dark-muted transition-colors duration-500 hover:border-white hover:bg-white/10"
+                  >
+                    <Icon aria-hidden="true" />
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+
+      <div class="flex flex-col gap-sm">
+        <h3 class="type-label-eyebrow text-on-dark-muted">{footer.quickMenuTitle}</h3>
+        <ul class="flex flex-col">
+          {
+            footer.quickMenu.map((link) => (
+              <li>
+                <a href={link.href} class="type-label-nav inline-flex min-h-8 items-center transition-opacity duration-500 hover:opacity-70">
+                  <span data-display-case>{displayCase(link.label)}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="flex flex-col gap-sm">
+        <h3 class="type-label-eyebrow text-on-dark-muted">{footer.contactTitle}</h3>
+        <p class="type-body-md">{contact.address}</p>
+        <a href={contact.phone.href} class="type-body-md w-fit transition-opacity duration-500 hover:opacity-70">{contact.phone.label}</a>
+        <a href={contact.email.href} class="type-body-md w-fit underline underline-offset-4 transition-opacity duration-500 hover:opacity-70">{contact.email.footerLabel}</a>
+      </div>
+    </div>
+
+    <div class="mt-xl border-t border-on-dark-muted/40 pt-md">
+      <p class="type-body-sm text-on-dark-muted">{footer.copyright}</p>
+    </div>
+  </div>
+</footer>

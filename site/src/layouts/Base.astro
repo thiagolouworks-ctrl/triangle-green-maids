@@ -1,0 +1,42 @@
+---
+import '../styles/global.css';
+import { meta } from '../data/content';
+import Preloader from '../components/Preloader.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = meta.title, description = meta.description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#26352b" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <title>{title}</title>
+    <!-- Enable motion-ready states before first paint so revealed content never flashes. -->
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        root.classList.add('js');
+        // Preloader once per session, never with reduced motion.
+        var seen = false;
+        try { seen = sessionStorage.getItem('tgm-preloader') === '1'; } catch (e) {}
+        if (seen || window.matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('no-preloader');
+      })();
+    </script>
+  </head>
+  <body class="bg-ivory text-text">
+    <Preloader />
+    <slot />
+    <script>
+      import '../scripts/motion';
+    </script>
+  </body>
+</html>

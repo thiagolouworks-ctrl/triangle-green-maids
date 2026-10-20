@@ -1,0 +1,183 @@
+/*
+  Design tokens — mirror the Figma `tokens` collection (file DMTzNf788pUSz3sGtmGByq).
+  Tailwind v4 reads them from @theme and generates utilities (bg-ivory, p-section, rounded-lg…).
+  The --space-* / --grid-* aliases keep the exact Figma variable names for plain CSS.
+*/
+@theme {
+  /* Typography */
+  --font-sans: "Instrument Sans Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Color */
+  --color-ivory: #f7f5ef;
+  --color-sage: #e1e8dc;
+  --color-surface: #f4f5f3;
+  --color-white: #ffffff;
+  --color-green: #368409; /* brand green, AA with white text (4.71:1) */
+  --color-green-hover: #2d6e07;
+  --color-green-bright: #5fc206; /* logo green — accents on dark, never text on light */
+  --color-green-bright-hover: #4da005;
+  /* Sampled from the official triangle (fig.png) — decorative accents only, never text. */
+  --color-brand-blue: #237ec2;
+  --color-brand-leaf: #7bc142;
+  --color-brand-teal: #63af65;
+  --color-sand: #c9ad88;
+  --color-forest: #26352b;
+  --color-black: #111311;
+  --color-text: #292e29;
+  --color-text-muted: #5b625a;
+  --color-line: #d9ddd3;
+  --color-on-dark-muted: #b9c4b5;
+
+  /* Spacing (8pt) */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 64px;
+  --spacing-2xl: 96px;
+  --spacing-section: 120px;
+  --spacing-3xl: 128px;
+  --spacing-margin: 64px;
+  --spacing-gutter: 32px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 40px;
+  --radius-pill: 999px;
+
+  /* Layout */
+  --container-content: 1312px;
+  --container-page: 1440px;
+
+  /* Motion */
+  --ease-calm: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-breathe: cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-soft: cubic-bezier(0.33, 0, 0.2, 1); /* symmetric-ish in/out for hovers: no snap at the start */
+  --duration-reveal: 1000ms;
+  --stagger: 110ms;
+}
+
+:root {
+  --space-xs: var(--spacing-xs);
+  --space-sm: var(--spacing-sm);
+  --space-md: var(--spacing-md);
+  --space-lg: var(--spacing-lg);
+  --space-xl: var(--spacing-xl);
+  --space-2xl: var(--spacing-2xl);
+  --space-section: var(--spacing-section);
+  --space-3xl: var(--spacing-3xl);
+  --grid-margin: var(--spacing-margin);
+  --grid-gutter: var(--spacing-gutter);
+  --grid-column: 80px;
+  --grid-content: var(--container-content);
+  --topbar-h: 48px;
+}
+
+/*
+  Text styles — same roles as the Figma text styles (v4/*).
+  Desktop values from the design; mobile values scale down on the 8pt grid.
+*/
+@utility type-display-h1 {
+  font-size: 44px;
+  line-height: 48px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  @media (width >= 48rem) {
+    font-size: 72px;
+    line-height: 80px;
+  }
+}
+
+@utility type-display-xl {
+  font-size: 40px;
+  line-height: 48px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  @media (width >= 48rem) {
+    font-size: 64px;
+    line-height: 72px;
+  }
+}
+
+@utility type-heading-h2 {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  @media (width >= 48rem) {
+    font-size: 40px;
+    line-height: 48px;
+  }
+}
+
+@utility type-heading-card {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  @media (width >= 48rem) {
+    font-size: 32px;
+    line-height: 40px;
+  }
+}
+
+@utility type-heading-h3 {
+  font-size: 20px;
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+@utility type-body-lg {
+  font-size: 18px;
+  line-height: 32px;
+  font-weight: 400;
+  @media (width >= 48rem) {
+    font-size: 20px;
+  }
+}
+
+@utility type-body-md {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+@utility type-body-sm {
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+@utility type-label-eyebrow {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+@utility type-label-nav {
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+@utility type-label-button {
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Page container: 12-col grid content width with 64px desktop / 24px mobile margins. */
+@utility container-page {
+  width: 100%;
+  max-width: var(--container-page);
+  margin-inline: auto;
+  padding-inline: 24px;
+  @media (width >= 64rem) {
+    padding-inline: var(--spacing-margin);
+  }
+}

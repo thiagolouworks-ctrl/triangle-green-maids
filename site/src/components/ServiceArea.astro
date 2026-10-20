@@ -1,0 +1,44 @@
+---
+/*
+  09 Service Area (44:353): map (cols 1–6, radius/lg) + heading and text.
+  The Figma frame shows a static OSM render; per its annotation the code uses the
+  same Google Maps embed as the published home (lazy-loaded).
+*/
+import { serviceArea } from '../data/content';
+---
+
+<section class="section-service-area">
+  <div class="container-page flex flex-col gap-xl py-2xl lg:flex-row lg:items-center lg:gap-[144px] lg:py-section">
+    <div
+      class="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-sage lg:h-[480px] lg:w-[640px] lg:shrink-0"
+      data-reveal="image"
+    >
+      <iframe
+        src={serviceArea.mapSrc}
+        title={serviceArea.mapTitle}
+        class="map-embed absolute inset-0 size-full border-0"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen></iframe>
+    </div>
+    <div class="flex flex-1 flex-col gap-md">
+      <span class="h-1 w-12 rounded-pill bg-green-bright" aria-hidden="true" data-reveal></span>
+      <h2 class="type-heading-h2 text-text" data-reveal>
+        {serviceArea.headingLead}<span class="text-green">{serviceArea.headingCities}</span>{serviceArea.headingTail}
+      </h2>
+      <p class="type-body-md text-text-muted" data-reveal style="--i:1">{serviceArea.text}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Quiet the default map palette so it sits inside the ivory page. */
+  .map-embed {
+    filter: saturate(0.55) contrast(0.96) brightness(1.02);
+    transition: filter 800ms var(--ease-calm);
+  }
+  .map-embed:hover,
+  .map-embed:focus {
+    filter: none;
+  }
+</style>

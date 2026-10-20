@@ -1,0 +1,52 @@
+---
+/*
+  11 Final CTA (44:375): calm bedroom with a sheer linen curtain breathing in the breeze
+  ("fresh air" moment). The still photo is the base layer (reduced motion, poster, slow networks);
+  a 20s ping-pong video loop sits on top. Restrained forest overlay keeps the white copy AA.
+*/
+import { Picture } from 'astro:assets';
+import { finalCta, cta } from '../data/content';
+import { images } from '../data/images';
+import Button from './Button.astro';
+---
+
+<section class="section-final-cta on-dark relative isolate overflow-hidden text-white" data-grow-section>
+  <!-- Grows on scroll from an inset rounded card (radius/lg) to full bleed. -->
+  <div class="absolute inset-0 -z-10 overflow-hidden bg-forest" data-grow>
+  <div class="absolute inset-x-0 -inset-y-16 will-change-transform" data-parallax="0.08">
+    <Picture
+      src={images.ctaBanner}
+      alt=""
+      widths={[640, 960, 1440, 2160, 2880]}
+      sizes="100vw"
+      formats={['avif', 'webp']}
+      loading="lazy"
+      class="absolute inset-0 size-full object-cover object-[60%_50%]"
+    />
+    <video
+      class="absolute inset-0 size-full object-cover object-[60%_50%]"
+      autoplay
+      muted
+      loop
+      playsinline
+      disablepictureinpicture
+      preload="none"
+      tabindex="-1"
+      aria-hidden="true"
+      data-ambient-video
+    >
+      <source src="/media/cta-curtain.webm" type="video/webm" />
+      <source src="/media/cta-curtain.mp4" type="video/mp4" />
+    </video>
+  </div>
+  <div class="absolute inset-0 bg-forest/35" aria-hidden="true"></div>
+  </div>
+
+  <div class="container-page flex min-h-[520px] flex-col items-center justify-center gap-lg py-2xl text-center md:min-h-[640px]">
+    <h2 class="type-heading-h2 max-w-[864px] text-balance" data-reveal>{finalCta.text}</h2>
+    <div class="flex flex-wrap justify-center gap-sm" data-reveal style="--i:1">
+      <Button href={cta.book.href}>{cta.book.label}</Button>
+      <Button href={cta.quote.href} variant="outline-light">{cta.quote.label}</Button>
+    </div>
+  </div>
+</section>

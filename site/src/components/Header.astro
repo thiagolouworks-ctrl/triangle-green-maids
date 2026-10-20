@@ -1,0 +1,162 @@
+---
+/*
+  01 Header (44:292): white logo + nav over the hero photo, booking CTA on the right.
+  After the hero it becomes a solid forest bar (motion.ts). Dropdowns list the sub-pages from copy.md.
+*/
+import { Image } from 'astro:assets';
+import { nav, cta, brand } from '../data/content';
+import { images } from '../data/images';
+import Button from './Button.astro';
+import ChevronDown from '../assets/icons/chevron-down.svg';
+import { displayCase as titleCase } from '../lib/text';
+
+---
+
+<header data-site-header class="site-header on-dark fixed inset-x-0 top-0 z-50 text-white md:top-12">
+  <div class="container-page flex h-20 items-center xl:h-24">
+    <a href={brand.href} class="relative z-10 shrink-0 transition-opacity duration-500 hover:opacity-80">
+      <Image
+        src={images.logoWhite}
+        alt={brand.logoAlt}
+        width={225}
+        densities={[1, 2]}
+        class="h-9 w-auto object-contain opacity-95 xl:h-10"
+        loading="eager"
+      />
+    </a>
+
+    <!-- Desktop navigation -->
+    <nav aria-label="Primary" class="hidden pl-md xl:block min-[1440px]:pl-lg">
+      <ul class="flex items-center gap-md">
+        {
+          nav.map((item, i) =>
+            item.children ? (
+              <li class="relative" data-dropdown>
+                <div class="flex min-h-12 items-center gap-xs">
+                  <a href={item.href} class="type-label-nav nav-tight link-underline whitespace-nowrap">
+                    <span data-display-case>{titleCase(item.label)}</span>
+                  </a>
+                  <button
+                    type="button"
+                    class="-m-2 grid size-8 place-items-center rounded-pill transition-colors duration-500 hover:bg-white/10"
+                    aria-expanded="false"
+                    aria-controls={`nav-panel-${i}`}
+                    aria-label={titleCase(item.label)}
+                    data-dropdown-trigger
+                  >
+                    <ChevronDown class="chevron transition-transform duration-500 ease-[var(--ease-calm)]" />
+                  </button>
+                </div>
+                <div id={`nav-panel-${i}`} class="disclosure absolute top-full -left-md w-[320px]" data-dropdown-panel inert>
+                  <div>
+                    <ul class="mt-2 rounded-md bg-ivory p-xs text-text shadow-[0_24px_48px_-24px_rgba(17,19,17,0.35)]">
+                      {item.children.map((child) => (
+                        <li>
+                          <a
+                            href={child.href}
+                            class="type-body-md block rounded-sm px-sm py-[12px] transition-colors duration-300 hover:bg-sage"
+                          >
+                            <span data-display-case>{titleCase(child.label)}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            ) : (
+              <li>
+                <a href={item.href} class="type-label-nav nav-tight link-underline flex min-h-12 items-center whitespace-nowrap">
+                  <span data-display-case>{titleCase(item.label)}</span>
+                </a>
+              </li>
+            ),
+          )
+        }
+      </ul>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-sm">
+      <div class="hidden sm:block">
+        <Button href={cta.book.href}>{cta.book.label}</Button>
+      </div>
+      <button
+        type="button"
+        class="grid size-12 place-items-center rounded-pill transition-colors duration-500 hover:bg-white/10 xl:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Menu"
+        data-menu-trigger
+      >
+        <span class="menu-icon relative block h-3 w-6" aria-hidden="true">
+          <span class="absolute inset-x-0 top-0 h-px bg-white transition-transform duration-500 ease-[var(--ease-calm)]"></span>
+          <span class="absolute inset-x-0 bottom-0 h-px bg-white transition-transform duration-500 ease-[var(--ease-calm)]"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile navigation -->
+  <div id="mobile-menu" class="disclosure xl:hidden" data-menu-panel inert>
+    <div>
+      <nav aria-label="Primary" class="container-page max-h-[calc(100svh-80px)] overflow-y-auto pt-sm pb-xl">
+        <ul class="divide-y divide-white/15 border-t border-white/15">
+          {
+            nav.map((item) => (
+              <li class="py-sm">
+                <a href={item.href} class="type-label-nav nav-tight flex min-h-12 items-center">
+                  <span data-display-case>{titleCase(item.label)}</span>
+                </a>
+                {item.children && (
+                  <ul class="pb-xs pl-sm">
+                    {item.children.map((child) => (
+                      <li>
+                        <a href={child.href} class="type-body-md flex min-h-11 items-center text-on-dark-muted">
+                          <span data-display-case>{titleCase(child.label)}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+        <Button href={cta.book.href} class="mt-lg w-full">{cta.book.label}</Button>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* 1280–1439px: tighter tracking so all six items fit on one line. */
+  /* Mixed-case menu: 15px, no tracking (tracking is for caps only). */
+  .nav-tight {
+    font-size: 15px;
+    letter-spacing: 0;
+  }
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 2px;
+    transition: background-size 600ms var(--ease-calm);
+  }
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+  [aria-expanded='true'] .chevron {
+    transform: rotate(180deg);
+  }
+  [data-menu-trigger][aria-expanded='true'] .menu-icon span:first-child {
+    transform: translateY(5.5px) rotate(45deg);
+  }
+  [data-menu-trigger][aria-expanded='true'] .menu-icon span:last-child {
+    transform: translateY(-5.5px) rotate(-45deg);
+  }
+  :global(.site-header.menu-open) {
+    background-color: var(--color-forest);
+  }
+</style>

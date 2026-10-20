@@ -1,0 +1,56 @@
+---
+/*
+  ServiceCard v2 (30:178): photo fills the card, dark gradient only on the lower half,
+  white title + green accent bar bottom-left. The whole card is the link.
+*/
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { displayCase } from '../lib/text';
+
+interface Props {
+  href: string;
+  label: string;
+  image: ImageMetadata;
+  wide?: boolean;
+  position?: string;
+  index?: number;
+}
+
+const { href, label, image, wide = false, position = '50% 50%', index = 0 } = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={[
+    'service-card group relative isolate flex flex-col justify-end overflow-hidden rounded-md text-white',
+    'h-[400px] sm:h-[440px] lg:h-[512px]',
+    wide && 'md:col-span-2',
+  ]}
+  data-reveal="rise"
+  style={`--i:${index}`}
+>
+  <div class="reveal-layer absolute inset-0 -z-10 overflow-hidden bg-surface">
+  <Picture
+    src={image}
+    alt=""
+    widths={wide ? [640, 960, 1312, 1968, 2624] : [480, 640, 960, 1296]}
+    sizes={wide ? '(min-width: 1440px) 1312px, 100vw' : '(min-width: 1440px) 648px, (min-width: 768px) 50vw, 100vw'}
+    formats={['avif', 'webp']}
+    loading="lazy"
+    class="service-card__img reveal-zoom absolute inset-0 size-full object-cover transition-transform duration-[1600ms] ease-[var(--ease-calm)] group-hover:scale-[1.035]"
+    style={`object-position:${position};`}
+  />
+  <div
+    class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,transparent_50%,rgba(17,19,17,0.72)_100%)]"
+    aria-hidden="true"
+  >
+  </div>
+  </div>
+  <div class="reveal-text relative z-10 flex flex-col gap-sm p-md md:p-lg">
+    <h3 class="type-heading-card max-w-[520px]" data-display-case>{displayCase(label)}</h3>
+    <span
+      class="h-1 w-12 rounded-pill bg-green-bright transition-[width] duration-700 ease-[var(--ease-calm)] group-hover:w-20 group-focus-visible:w-20"
+      aria-hidden="true"
+    ></span>
+  </div>
+</a>

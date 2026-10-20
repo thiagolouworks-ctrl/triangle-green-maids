@@ -1,0 +1,40 @@
+---
+/*
+  04 Services (44:318): original section title (accent on "home spotless and clean")
+  + bento of the five cards from the published home, same order: 2×2 and a wide card.
+*/
+import { services } from '../data/content';
+import { images } from '../data/images';
+import ServiceCard from './ServiceCard.astro';
+
+const imageFor = {
+  overview: images.services.overview,
+  house: images.services.house,
+  deep: images.services.deep,
+  keeping: images.services.keeping,
+  move: images.services.move,
+};
+---
+
+<section class="section-services relative z-10">
+  <div class="container-page pt-xl pb-2xl lg:pt-section lg:pb-section">
+    <h2 class="type-display-xl text-text text-balance" data-reveal>
+      {services.titleLead}<span class="text-green">{services.titleAccent}</span>{services.titleTail}{' '}<br class="hidden md:block" />{services.titleSecond}
+    </h2>
+
+    <div class="mt-lg grid grid-cols-1 gap-sm md:grid-cols-2 lg:mt-xl">
+      {
+        services.cards.map((card, i) => (
+          <ServiceCard
+            href={card.href}
+            label={card.label}
+            image={imageFor[card.key]}
+            wide={card.key === 'move'}
+            position={card.key === 'move' ? '50% 93%' : '50% 50%'}
+            index={i % 2}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>

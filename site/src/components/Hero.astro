@@ -1,0 +1,44 @@
+---
+/*
+  02 Hero (58:386): full-bleed photo, no overlay, centred copy on the dark wall.
+  Image: 2:1 source, cover-cropped and anchored left like the design (w 116.67%, left 0);
+  on narrow screens the crop keeps the dark wall behind the text.
+*/
+import { Picture } from 'astro:assets';
+import { hero, cta } from '../data/content';
+import { images } from '../data/images';
+import Button from './Button.astro';
+---
+
+<!-- Fills the first screen: 100svh on mobile, 100svh minus the 48px top bar from md up. -->
+<section class="section-hero on-dark relative isolate flex h-[100svh] min-h-[600px] items-center justify-center overflow-hidden bg-black text-white md:h-[calc(100svh-var(--topbar-h))]">
+  <div class="hero-media absolute inset-0 -z-10">
+    <div class="absolute inset-0 will-change-transform" data-hero-zoom>
+    <Picture
+      src={images.hero}
+      alt=""
+      widths={[640, 960, 1280, 1680, 2240, 2880]}
+      sizes="100vw"
+      formats={['avif', 'webp']}
+      loading="eager"
+      fetchpriority="high"
+      class="hero-kenburns size-full object-cover object-[30%_50%] md:object-[0%_50%]"
+    />
+    </div>
+  </div>
+
+  <div class="container-page flex flex-col items-center pt-[104px] pb-2xl text-center will-change-transform md:pt-[152px]" data-hero-content>
+    <h1 class="type-display-h1 max-w-[864px] text-balance">
+      <span class="block" data-hero-item style="--i:0">{hero.titleLead}</span>{' '}<span class="block" data-hero-item style="--i:1"
+        ><span class="text-green-bright">{hero.titleAccent}</span> {hero.titleTail}</span
+      >
+    </h1>
+    <p class="type-body-lg mt-md max-w-[440px] text-white/90" data-hero-item style="--i:2">
+      {hero.lead} <br class="hidden sm:block" />{hero.tail}
+    </p>
+    <div class="mt-lg flex flex-wrap justify-center gap-sm" data-hero-item style="--i:3">
+      <Button href={cta.book.href}>{cta.book.label}</Button>
+      <Button href={cta.quote.href} variant="outline-light">{cta.quote.label}</Button>
+    </div>
+  </div>
+</section>
