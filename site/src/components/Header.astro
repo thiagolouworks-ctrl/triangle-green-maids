@@ -104,23 +104,25 @@ import { displayCase as titleCase } from '../lib/text';
           {
             nav.map((item, i) => (
               <li class="py-xs" data-dropdown>
-                <div class="flex items-center justify-between gap-sm">
-                  <a href={item.href} class="type-label-nav nav-tight flex min-h-12 flex-1 items-center">
+                {item.children ? (
+                  // Items with sub-pages: the whole row toggles the accordion.
+                  <button
+                    type="button"
+                    class="type-label-nav nav-tight flex min-h-12 w-full items-center justify-between gap-sm text-left"
+                    aria-expanded="false"
+                    aria-controls={`m-nav-panel-${i}`}
+                    data-dropdown-trigger
+                  >
+                    <span data-display-case>{titleCase(item.label)}</span>
+                    <span class="grid size-12 shrink-0 place-items-center" aria-hidden="true">
+                      <ChevronDown class="chevron transition-transform duration-500 ease-[var(--ease-calm)]" />
+                    </span>
+                  </button>
+                ) : (
+                  <a href={item.href} class="type-label-nav nav-tight flex min-h-12 items-center">
                     <span data-display-case>{titleCase(item.label)}</span>
                   </a>
-                  {item.children && (
-                    <button
-                      type="button"
-                      class="grid size-12 place-items-center rounded-pill transition-colors duration-500 hover:bg-white/10"
-                      aria-expanded="false"
-                      aria-controls={`m-nav-panel-${i}`}
-                      aria-label={titleCase(item.label)}
-                      data-dropdown-trigger
-                    >
-                      <ChevronDown class="chevron transition-transform duration-500 ease-[var(--ease-calm)]" />
-                    </button>
-                  )}
-                </div>
+                )}
                 {item.children && (
                   <div id={`m-nav-panel-${i}`} class="disclosure" data-dropdown-panel inert>
                     <div>
